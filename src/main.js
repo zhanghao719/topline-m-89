@@ -3,20 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// 加载
-import {
-  Button,
-  Cell,
-  CellGroup
-} from 'vant'
-
-// 注册
-Vue.use(Button)
-  .use(Cell)
-  .use(CellGroup)
-// Vue.use(Button)
-// Vue.use(Cell)
-// Vue.use(CellGroup)
+// 加载注册 Vant 组件模块
+import './utils/register-vant'
 
 Vue.config.productionTip = false
 
