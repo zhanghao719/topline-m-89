@@ -7,20 +7,25 @@
     <!-- 登录表单 -->
     <van-cell-group>
       <van-field
-        required
         clearable
-        label="手机号"
+        left-icon="contact"
         placeholder="请输入手机号"
       />
 
       <van-field
-        label="验证码"
         placeholder="请输入验证码"
-        required
-      />
+        left-icon="contact"
+      >
+        <van-button
+          slot="button"
+          size="small"
+          type="primary"
+          round
+        >发送验证码</van-button>
+      </van-field>
     </van-cell-group>
 
-    <div>
+    <div class="login-btn-wrap">
       <van-button type="info">登录</van-button>
     </div>
     <!-- /登录表单 -->
@@ -43,4 +48,14 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.login-container {
+  .login-btn-wrap {
+    padding: 27px 16px;
+    .van-button {
+      width: 100%;
+      background: #6db4fb;
+    }
+  }
+}
+</style>
