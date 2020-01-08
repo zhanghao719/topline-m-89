@@ -22,7 +22,7 @@
         <van-count-down
           v-if="isCountDownShow"
           slot="button"
-          :time="1000 * 5"
+          :time="1000 * 60"
           format="ss s"
           @finish="isCountDownShow = false"
         />
@@ -46,6 +46,7 @@
 
 <script>
 import { login, getSmsCode } from '@/api/user'
+const a = 123
 
 export default {
   name: 'LoginPage',
@@ -102,14 +103,15 @@ export default {
         const { mobile } = this.user
         // 1. 验证手机号是否有效
 
-        // 2. 请求发送短信验证码
-        const res = await getSmsCode(mobile)
-        console.log(res)
-
-        // 3. 显示倒计时
+        // 2. 显示倒计时
         this.isCountDownShow = true
+
+        // 3. 请求发送短信验证码
+        // await getSmsCode(mobile)
       } catch (err) {
         console.log(err)
+        // 关闭验证码显示
+        this.isCountDownShow = false
         this.$toast('请勿频繁操作')
       }
     }
@@ -127,6 +129,7 @@ export default {
     }
   }
   .van-cell {
+    height: 45px;
     align-items: center;
   }
 }
