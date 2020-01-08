@@ -46,7 +46,6 @@
 
 <script>
 import { login, getSmsCode } from '@/api/user'
-const a = 123
 
 export default {
   name: 'LoginPage',
