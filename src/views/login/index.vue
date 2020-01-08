@@ -9,15 +9,16 @@
       <van-field
         v-model="user.mobile"
         clearable
-        left-icon="contact"
         placeholder="请输入手机号"
-      />
+      >
+        <i class="icon icon-shouji" slot="left-icon"></i>
+      </van-field>
 
       <van-field
         v-model="user.code"
         placeholder="请输入验证码"
-        left-icon="contact"
       >
+        <i class="icon icon-mima" slot="left-icon"></i>
         <van-button
           slot="button"
           size="small"
@@ -35,7 +36,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import { login } from '@/api/user'
 
 export default {
   name: 'LoginPage',
@@ -72,16 +73,7 @@ export default {
 
       // 3. 请求登录
       try {
-        const res = await request({
-          method: 'POST',
-          url: '/app/v1_0/authorizations',
-          // headers: {
-          // axios 会自动添加该请求头
-          // 'Content-Type': 'application/json'
-          // }, // 请求头参数
-          // params: {}, // Query 查询参数
-          data: user // Body 请求体参数
-        })
+        const res = await login(user)
 
         console.log(res)
 
@@ -106,6 +98,9 @@ export default {
       width: 100%;
       background: #6db4fb;
     }
+  }
+  .van-cell {
+    align-items: center;
   }
 }
 </style>
