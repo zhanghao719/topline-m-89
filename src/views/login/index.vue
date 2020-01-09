@@ -20,7 +20,7 @@
           errors[0] 获取错误消息
      -->
     <ValidationObserver ref="form">
-      <ValidationProvider name="手机号" rules="required" immediate>
+      <ValidationProvider name="手机号" rules="required|mobile" immediate>
         <van-field
           v-model="user.mobile"
           clearable
@@ -30,7 +30,7 @@
         </van-field>
       </ValidationProvider>
 
-      <ValidationProvider name="验证码" rules="required" immediate>
+      <ValidationProvider name="验证码" rules="required|code" immediate>
         <van-field
           v-model="user.code"
           placeholder="请输入验证码"
@@ -128,7 +128,7 @@ export default {
         this.$toast.success('登录成功')
       } catch (err) {
         console.log('登录失败', err)
-        this.$toast.fail('登录失败')
+        this.$toast.fail('登录失败，手机号或验证码不正确')
       }
 
       // 4. 根据后端返回结果执行后续业务处理
