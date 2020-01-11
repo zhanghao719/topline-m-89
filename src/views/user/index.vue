@@ -1,7 +1,7 @@
 <template>
   <div class="user-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="黑马头条号" left-arrow />
+    <van-nav-bar :title="user.name" left-arrow />
     <!-- /导航栏 -->
 
     <!-- 用户信息 -->
@@ -11,47 +11,53 @@
           class="col1"
           fit="cover"
           round
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="user.photo"
         />
         <div class="col2">
           <div class="row1">
             <div class="item">
-              <div class="count">123</div>
+              <div class="count">{{ user.art_count }}</div>
               <div class="text">发布</div>
             </div>
             <div class="item">
-              <div class="count">123</div>
+              <div class="count">{{ user.follow_count }}</div>
               <div class="text">关注</div>
             </div>
             <div class="item">
-              <div class="count">123</div>
+              <div class="count">{{ user.fans_count }}</div>
               <div class="text">粉丝</div>
             </div>
             <div class="item">
-              <div class="count">123</div>
+              <div class="count">{{ user.like_count }}</div>
               <div class="text">获赞</div>
             </div>
           </div>
           <div class="action">
+            <!-- 如果页面用户是当前登录用户，则显示编辑资料 -->
+            <!-- 否则显示私信和关注 -->
             <van-button
               type="primary"
               size="small"
             >私信</van-button>
             <van-button
+              type="info"
+              size="small"
+            >关注</van-button>
+            <!-- <van-button
               type="default"
               size="small"
-            >编辑资料</van-button>
+            >编辑资料</van-button> -->
           </div>
         </div>
       </div>
       <div class="intro-wrap">
         <div>
           <span>认证：</span>
-          <span>用户的认证信息</span>
+          <span>{{ user.certi }}</span>
         </div>
         <div>
           <span>简介：</span>
-          <span>用户的简介信息</span>
+          <span>{{ user.intro }}</span>
         </div>
       </div>
     </div>
@@ -63,18 +69,34 @@
 </template>
 
 <script>
+import { getUserById } from '@/api/user'
+
 export default {
   name: 'UserPage',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      user: {} // 用户信息
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadUser()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async loadUser () {
+      try {
+        const { data } = await getUserById(this.$route.params.userId)
+        this.user = data.data
+      } catch (err) {
+        console.log(err)
+        this.$toast('获取用户数据失败')
+      }
+    }
+  }
 }
 </script>
 
