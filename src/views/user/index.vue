@@ -1,7 +1,7 @@
 <template>
   <div class="user-container">
     <!-- 导航栏 -->
-    <van-nav-bar :title="user.name" left-arrow />
+    <van-nav-bar :title="user.name" left-arrow @click-left="$router.back()" />
     <!-- /导航栏 -->
 
     <!-- 用户信息 -->

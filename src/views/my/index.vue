@@ -3,7 +3,7 @@
     <!-- 已登录：用户信息 -->
     <div v-if="$store.state.user" class="user-info-wrap">
       <div class="base-info-wrap">
-        <div class="avatar-title-wrap">
+        <div class="avatar-title-wrap" @click="$router.push('/user/' + user.id)">
           <van-image
             class="avatar"
             round
