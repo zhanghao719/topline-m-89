@@ -14,7 +14,8 @@ import {
   TabbarItem,
   Image,
   Grid,
-  GridItem
+  GridItem,
+  Dialog
 } from 'vant'
 
 // 注册
@@ -31,3 +32,4 @@ Vue.use(Button)
   .use(Image)
   .use(Grid)
   .use(GridItem)
+  .use(Dialog)
