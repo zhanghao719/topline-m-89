@@ -10,33 +10,50 @@
       title 标签标题
      -->
     <van-tabs v-model="active">
-      <van-tab title="标签 1">
+      <van-tab
+        :title="channel.name"
+        v-for="channel in userChannels"
+        :key="channel.id"
+      >
         <!-- 文章列表 -->
+        <h2>{{ channel.name }} 的文章列表</h2>
         <!-- /文章列表 -->
       </van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
     </van-tabs>
     <!-- /频道列表 -->
   </div>
 </template>
 
 <script>
+import { getUserChannels } from '@/api/channel'
+
 export default {
   name: 'HomePage',
   components: {},
   props: {},
   data () {
     return {
-      active: 2
+      active: 0, // 控制激活的标签页
+      userChannels: [] // 用户频道列表
     }
   },
   computed: {},
   watch: {},
-  created () {},
+  created () {
+    this.loadUserChannels()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    async loadUserChannels () {
+      try {
+        const { data } = await getUserChannels()
+        this.userChannels = data.data.channels
+      } catch (err) {
+        console.log(err)
+        this.$toast('获取频道数据失败')
+      }
+    }
+  }
 }
 </script>
 
