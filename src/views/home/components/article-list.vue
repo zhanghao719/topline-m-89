@@ -1,17 +1,23 @@
 <template>
   <div class="article-list">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-      <van-cell
-        v-for="(article, index) in list"
-        :key="index"
-        :title="article.title"
-      />
-    </van-list>
+    <!--
+      v-model="isLoading" 控制下拉刷新的 loading 状态
+      @refresh 下拉刷新触发的事件
+     -->
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-cell
+          v-for="(article, index) in list"
+          :key="index"
+          :title="article.title"
+        />
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -34,7 +40,8 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      timestamp: null // 用于获取下一页数据的页码（时间戳）
+      timestamp: null, // 用于获取下一页数据的页码（时间戳）
+      isLoading: false // 控制下拉刷新的 loading 状态
     }
   },
   computed: {},
@@ -63,6 +70,25 @@ export default {
       } else {
         this.finished = true // 没有数据了，设置加载结束
       }
+    },
+
+    async onRefresh () {
+      // 下拉刷新组件会自动开启 loading
+      // 1. 请求数据
+      const { data } = await getArticlesByChannel({
+        channel_id: this.channel.id,
+        timestamp: Date.now(), // 下拉刷新永远请求获取最新数据
+        with_top: 1
+      })
+
+      // 2. 将数据放到列表的顶部
+      const { results } = data.data
+      this.list.unshift(...results)
+
+      // 3. 关闭下拉刷新的 loading
+      this.isLoading = false
+
+      this.$toast(`更新了${results.length}条数据`)
     }
   }
 }
