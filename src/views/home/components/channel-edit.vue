@@ -6,14 +6,17 @@
         round
         type="danger"
         plain
-      >编辑</van-button>
+        @click="isEditShow = !isEditShow"
+      >{{ isEditShow ? '完成' : '编辑'}}</van-button>
     </van-cell>
     <van-grid :gutter="10" clickable>
       <van-grid-item
-        v-for="channel in userChannels"
+        v-for="(channel, index) in userChannels"
         :key="channel.id"
         :text="channel.name"
-      />
+      >
+        <van-icon v-show="isEditShow && index !== 0" slot="icon" name="close" />
+      </van-grid-item>
     </van-grid>
     <van-cell class="channel-header" title="推荐频道" :border="false" />
     <van-grid :gutter="10" clickable>
@@ -21,6 +24,7 @@
         v-for="channel in remainingChannels"
         :key="channel.id"
         :text="channel.name"
+        @click="onAdd(channel)"
       />
     </van-grid>
   </div>
@@ -45,7 +49,8 @@ export default {
   },
   data () {
     return {
-      allChannels: [] // 所有频道
+      allChannels: [], // 所有频道
+      isEditShow: false
     }
   },
   computed: {
@@ -73,6 +78,10 @@ export default {
     async loadAllChannels () {
       const { data } = await getAllChannels()
       this.allChannels = data.data.channels
+    },
+
+    onAdd (channel) {
+      this.userChannels.push(channel)
     }
   }
 }
@@ -88,6 +97,15 @@ export default {
   /deep/ .van-grid-item {
     width: 80px;
     height: 43px;
+    position: relative;
+    .van-grid-item__icon-wrapper {
+      position: absolute;
+      top: -14px;
+      right: -5px;
+      .van-icon-close {
+        font-size: 14px;
+      }
+    }
     .van-grid-item__content {
       background: #f4f5f6;
     }
