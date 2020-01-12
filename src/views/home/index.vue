@@ -21,6 +21,17 @@
       </van-tab>
     </van-tabs>
     <!-- /频道列表 -->
+
+    <!-- 编辑频道 -->
+    <van-popup
+      v-model="isChannelEditShow"
+      position="bottom"
+      :style="{ height: '100%' }"
+      round
+      closeable
+      close-icon-position="top-left"
+    />
+    <!-- /编辑频道 -->
   </div>
 </template>
 
@@ -37,7 +48,8 @@ export default {
   data () {
     return {
       active: 0, // 控制激活的标签页
-      userChannels: [] // 用户频道列表
+      userChannels: [], // 用户频道列表
+      isChannelEditShow: true
     }
   },
   computed: {},
