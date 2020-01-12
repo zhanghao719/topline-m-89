@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 导航栏 -->
-    <van-nav-bar title="首页" />
+    <van-nav-bar title="首页" fixed />
     <!-- /导航栏 -->
 
     <!-- 频道列表 -->
@@ -60,4 +60,17 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.home-container {
+  padding-top: 90px;
+  padding-bottom: 50px;
+}
+
+/deep/ .van-tabs__wrap {
+  position: fixed;
+  top: 46px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+</style>
