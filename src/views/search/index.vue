@@ -6,6 +6,7 @@
         v-model="searchContent"
         placeholder="请输入搜索关键词"
         show-action
+        background="#3296fa"
         @search="onSearch"
         @cancel="onCancel"
         @focus="isSearchResultShow = false"
@@ -22,10 +23,11 @@
     <van-cell-group v-else-if="searchContent">
       <van-cell
         icon="search"
-        :title="item"
         v-for="(item, index) in suggestions"
         :key="index"
-      />
+      >
+        <div slot="title" v-html="highlight(item)"></div>
+      </van-cell>
     </van-cell-group>
     <!-- /联想建议 -->
 
@@ -102,6 +104,17 @@ export default {
       this.suggestions = data.data.options
 
       // 3. 模板绑定
+    },
+
+    highlight (str) {
+      const searchContent = this.searchContent
+      // /searchContent/ 正则表达式中的一切内容都会当做字符串使用
+      // 这里可以 new RegExp 方式根据字符串创建一个正则表达式
+      // RegExp 是原生 JavaScript 的内置构造函数
+      // 参数1：字符串，注意，这里不要加 //
+      // 参数2：匹配模式，g 全局，i 忽略大小写
+      const reg = new RegExp(searchContent, 'gi')
+      return str.replace(reg, `<span style="color: #3296fa">${searchContent}</span>`)
     }
   }
 }
