@@ -7,7 +7,7 @@
         placeholder="请输入搜索关键词"
         show-action
         background="#3296fa"
-        @search="onSearch"
+        @search="onSearch(searchContent)"
         @cancel="onCancel"
         @focus="isSearchResultShow = false"
         @input="onSearchInput"
@@ -28,6 +28,7 @@
         icon="search"
         v-for="(item, index) in suggestions"
         :key="index"
+        @click="onSearch(item)"
       >
         <div slot="title" v-html="highlight(item)"></div>
       </van-cell>
@@ -37,25 +38,20 @@
     <!-- 历史记录 -->
     <van-cell-group v-else>
       <van-cell title="历史记录">
-        <van-icon name="delete" />
-        <span>全部删除</span>
-        &nbsp;&nbsp;
-        <span>完成</span>
+        <template v-if="isDeleteShow">
+          <span @click="searchHistories = []">全部删除</span>
+          &nbsp;&nbsp;
+          <span @click="isDeleteShow = false">完成</span>
+        </template>
+        <van-icon v-else name="delete" @click="isDeleteShow = true" />
       </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
+      <van-cell
+        :title="item"
+        v-for="(item, index) in searchHistories"
+        :key="index"
+        @click="onHistoryClick(item, index)"
+      >
+        <van-icon v-show="isDeleteShow" name="close"></van-icon>
       </van-cell>
     </van-cell-group>
     <!-- /历史记录 -->
@@ -76,7 +72,9 @@ export default {
     return {
       searchContent: '', // 搜索内容
       isSearchResultShow: false, // 是否展示搜索结果
-      suggestions: [] // 联想建议
+      suggestions: [], // 联想建议
+      searchHistories: [], // 搜索历史记录
+      isDeleteShow: false // 删除历史记录的显示状态
     }
   },
   computed: {},
@@ -84,10 +82,19 @@ export default {
   created () {},
   mounted () {},
   methods: {
-    onSearch () {
-      console.log('onSearch')
+    onSearch (q) {
+      // 1. 更新搜索文本框的数据
+      this.searchContent = q
 
-      // 展示搜索结果
+      // 2. 记录搜索历史记录
+      const searchHistories = this.searchHistories
+      const index = searchHistories.indexOf(q)
+      if (index !== -1) {
+        searchHistories.splice(index)
+      }
+      searchHistories.unshift(q)
+
+      // 3. 展示搜索结果
       this.isSearchResultShow = true
     },
 
@@ -119,6 +126,16 @@ export default {
       // 参数2：匹配模式，g 全局，i 忽略大小写
       const reg = new RegExp(searchContent, 'gi')
       return str.replace(reg, `<span style="color: #3296fa">${searchContent}</span>`)
+    },
+
+    onHistoryClick (item, index) {
+      // 如果是删除状态，则执行删除操作
+      if (this.isDeleteShow) {
+        this.searchHistories.splice(index, 1)
+      } else {
+        // 否则执行搜索操作
+        this.onSearch(item)
+      }
     }
   }
 }
