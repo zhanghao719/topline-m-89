@@ -62,6 +62,7 @@
 import SearchResult from './components/search-result'
 import { getSuggestions } from '@/api/search'
 import { debounce } from 'lodash'
+import { getItem, setItem } from '@/utils/storage'
 
 export default {
   name: 'SearchPage',
@@ -74,12 +75,16 @@ export default {
       searchContent: '', // 搜索内容
       isSearchResultShow: false, // 是否展示搜索结果
       suggestions: [], // 联想建议
-      searchHistories: [], // 搜索历史记录
+      searchHistories: getItem('serach-histories') || [], // 搜索历史记录
       isDeleteShow: false // 删除历史记录的显示状态
     }
   },
   computed: {},
-  watch: {},
+  watch: {
+    searchHistories (val) {
+      setItem('serach-histories', val)
+    }
+  },
   created () {},
   mounted () {},
   methods: {
