@@ -16,7 +16,10 @@
     <!-- /搜索栏 -->
 
     <!-- 搜索结果 -->
-    <search-result v-if="isSearchResultShow" />
+    <search-result
+      v-if="isSearchResultShow"
+      :q="searchContent"
+    />
     <!-- /搜索结果 -->
 
     <!-- 联想建议 -->
@@ -87,6 +90,7 @@ export default {
       // 展示搜索结果
       this.isSearchResultShow = true
     },
+
     onCancel () {
       console.log('onCancel')
     },
