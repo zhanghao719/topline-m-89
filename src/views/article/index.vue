@@ -51,7 +51,7 @@
       <!-- /文章内容 -->
 
       <!-- 文章评论 -->
-      <article-comment />
+      <article-comment :article-id="articleId" />
       <!-- /文章评论 -->
     </div>
     <!-- /文章详情 -->
