@@ -71,13 +71,13 @@
 
     <!-- 底部区域 -->
     <div class="footer">
-      <van-button
-        class="write-btn"
-        type="default"
-        round
-        size="small"
-        @click="isPostShow = true"
-      >写评论</van-button>
+    <van-button
+      class="write-btn"
+      type="default"
+      round
+      size="small"
+      @click="isPostShow = true"
+    >写评论</van-button>
       <van-icon
         class="comment-icon"
         name="comment-o"
@@ -101,8 +101,9 @@
     <van-popup
       v-model="isPostShow"
       position="bottom"
-      :style="{ height: '20%' }"
-    />
+    >
+      <post-comment />
+    </van-popup>
     <!-- /发布文章评论 -->
   </div>
 </template>
@@ -117,6 +118,7 @@ import {
 } from '@/api/article'
 import { addFollow, deleteFollow } from '@/api/user'
 import ArticleComment from './components/article-comment'
+import PostComment from './components/post-comment'
 
 // vuex 模块提供了一些辅助方法，专门用来让我们更方便的获取容器中的数据
 // mapState：映射获取 state 数据
@@ -127,7 +129,8 @@ import { mapState } from 'vuex'
 export default {
   name: 'ArticlePage',
   components: {
-    ArticleComment
+    ArticleComment,
+    PostComment
   },
   props: {
     articleId: {
