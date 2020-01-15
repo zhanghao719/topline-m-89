@@ -42,6 +42,8 @@
           :type="article.is_followed ? 'default' : 'info'"
           size="small"
           round
+          :loading="isFollowLoading"
+          @click="onFollow"
         >{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
       <div class="markdown-body" v-html="article.content"></div>
@@ -98,6 +100,7 @@ import {
   addLike,
   deleteLike
 } from '@/api/article'
+import { addFollow, deleteFollow } from '@/api/user'
 
 // vuex 模块提供了一些辅助方法，专门用来让我们更方便的获取容器中的数据
 // mapState：映射获取 state 数据
@@ -117,7 +120,8 @@ export default {
   data () {
     return {
       article: {}, // 文章详情
-      loading: true // 文章加载中的 loading 状态
+      loading: true, // 文章加载中的 loading 状态
+      isFollowLoading: false // 关注按钮的 loading 状态
     }
   },
   computed: {
@@ -198,6 +202,25 @@ export default {
         console.log(err)
         this.$toast.fail('操作失败')
       }
+    },
+
+    async onFollow () {
+      this.isFollowLoading = true
+      try {
+        const authorId = this.article.aut_id
+        // 如果已关注，则取消关注
+        if (this.article.is_followed) {
+          await deleteFollow(authorId)
+        } else {
+          // 添加关注
+          await addFollow(authorId)
+        }
+        this.article.is_followed = !this.article.is_followed
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+      this.isFollowLoading = false
     }
   }
 }

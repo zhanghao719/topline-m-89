@@ -28,7 +28,6 @@ request.defaults.transformResponse = [function (data) {
     // 它默认是这样的
     // return JSON.parse(data)
   } catch (err) {
-    console.log('转换失败', err)
     return {}
   }
 }]
