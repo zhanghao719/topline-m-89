@@ -75,7 +75,7 @@
       />
       <van-icon
         color="#e5645f"
-        name="good-job"
+        :name="article.attitude === 1 ? 'good-job' : 'good-job-o'"
       />
       <van-icon class="share-icon" name="share" />
     </div>
