@@ -75,13 +75,13 @@
 
     <!-- 底部区域 -->
     <div class="footer">
-    <van-button
-      class="write-btn"
-      type="default"
-      round
-      size="small"
-      @click="isPostShow = true"
-    >写评论</van-button>
+      <van-button
+        class="write-btn"
+        type="default"
+        round
+        size="small"
+        @click="isPostShow = true"
+      >写评论</van-button>
       <van-icon
         class="comment-icon"
         name="comment-o"
