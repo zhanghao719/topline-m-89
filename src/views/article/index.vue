@@ -51,7 +51,11 @@
       <!-- /文章内容 -->
 
       <!-- 文章评论 -->
-      <article-comment :article-id="articleId" />
+      <article-comment
+        ref="article-comment"
+        :article-id="articleId"
+        @click-reply="onReplyShow"
+      />
       <!-- /文章评论 -->
     </div>
     <!-- /文章详情 -->
@@ -111,6 +115,16 @@
       <post-comment v-model="postMessage" @click-post="onPost" />
     </van-popup>
     <!-- /发布文章评论 -->
+
+    <!-- 评论回复 -->
+    <van-popup
+      v-model="isReplyShow"
+      position="bottom"
+      style="height: 90%"
+    >
+      评论回复
+    </van-popup>
+    <!-- /评论回复 -->
   </div>
 </template>
 
@@ -131,6 +145,7 @@ import PostComment from './components/post-comment'
 // mapMutation：映射获取 mutation 数据
 // maoAction：映射获取 action 数据
 import { mapState } from 'vuex'
+import { addComment } from '@/api/comment'
 
 export default {
   name: 'ArticlePage',
@@ -150,7 +165,9 @@ export default {
       loading: true, // 文章加载中的 loading 状态
       isFollowLoading: false, // 关注按钮的 loading 状态
       isPostShow: false, // 发布评论的弹层显示状态
-      postMessage: '' // 发布评论内容
+      postMessage: '', // 发布评论内容
+      isReplyShow: false, // 展示评论回复弹层
+      currentComment: {} // 点击回复的那个评论项
     }
   },
   computed: {
@@ -252,8 +269,41 @@ export default {
       this.isFollowLoading = false
     },
 
-    onPost () {
-      console.log('发布。。。')
+    async onPost () {
+      this.$toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '发布中...',
+        forbidClick: true // 是否禁止背景点击
+      })
+
+      try {
+        const { data } = await addComment({
+          target: this.articleId,
+          content: this.postMessage
+        })
+
+        // 清空文本框
+        this.postMessage = ''
+
+        // 关闭弹层
+        this.isPostShow = false
+
+        // 将数据添加到列表顶部
+        this.$refs['article-comment'].list.unshift(data.data.new_obj)
+
+        this.$toast.success('发布成功')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('发布失败')
+      }
+    },
+
+    onReplyShow (comment) {
+      // 将点击回复所在的评论对象记录起来
+      this.currentComment = comment
+
+      // 展示回复的弹层
+      this.isReplyShow = true
     }
   }
 }

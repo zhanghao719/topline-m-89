@@ -10,6 +10,7 @@
         v-for="(item, index) in list"
         :key="index"
         :comment="item"
+        @click-reply="$emit('click-reply', $event)"
       />
     </van-list>
   </div>
