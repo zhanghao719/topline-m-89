@@ -68,3 +68,12 @@ export const getUserProfile = () => {
     url: '/app/v1_0/user/profile'
   })
 }
+
+// 获取用户资料
+export const updateUserPhoto = data => {
+  return request({
+    method: 'PATCH',
+    url: '/app/v1_0/user/photo',
+    data
+  })
+}
