@@ -122,7 +122,7 @@
       position="bottom"
       style="height: 90%"
     >
-      评论回复
+      <comment-reply :comment="currentComment" />
     </van-popup>
     <!-- /评论回复 -->
   </div>
@@ -139,6 +139,7 @@ import {
 import { addFollow, deleteFollow } from '@/api/user'
 import ArticleComment from './components/article-comment'
 import PostComment from './components/post-comment'
+import CommentReply from './components/comment-reply'
 
 // vuex 模块提供了一些辅助方法，专门用来让我们更方便的获取容器中的数据
 // mapState：映射获取 state 数据
@@ -151,7 +152,8 @@ export default {
   name: 'ArticlePage',
   components: {
     ArticleComment,
-    PostComment
+    PostComment,
+    CommentReply
   },
   props: {
     articleId: {
