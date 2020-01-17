@@ -102,7 +102,13 @@
       v-model="isPostShow"
       position="bottom"
     >
-      <post-comment />
+      <!--
+        在组件上使用 v-model
+          :value="postMessage"
+          @input="postMessage = 事件参数"
+        本质还是父子通信
+       -->
+      <post-comment v-model="postMessage" @click-post="onPost" />
     </van-popup>
     <!-- /发布文章评论 -->
   </div>
@@ -143,7 +149,8 @@ export default {
       article: {}, // 文章详情
       loading: true, // 文章加载中的 loading 状态
       isFollowLoading: false, // 关注按钮的 loading 状态
-      isPostShow: false // 发布评论的弹层显示状态
+      isPostShow: false, // 发布评论的弹层显示状态
+      postMessage: '' // 发布评论内容
     }
   },
   computed: {
@@ -243,6 +250,10 @@ export default {
         this.$toast.fail('操作失败')
       }
       this.isFollowLoading = false
+    },
+
+    onPost () {
+      console.log('发布。。。')
     }
   }
 }
