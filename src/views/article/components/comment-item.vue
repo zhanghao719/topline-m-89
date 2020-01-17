@@ -30,7 +30,7 @@
         >回复 {{ comment.reply_count }}</van-button>
       </p>
     </div>
-    <div slot="right-icon" class="like-container">
+    <div slot="right-icon" class="like-container" @click="onLike">
       <van-icon
         :color="comment.is_liking ? '#e5645f' : ''"
         :name="comment.is_liking ? 'good-job' : 'good-job-o'"
@@ -41,6 +41,8 @@
 </template>
 
 <script>
+import { addCommentLike, deleteCommentLike } from '@/api/comment'
+
 export default {
   name: 'CommentItem',
   components: {},
@@ -57,7 +59,28 @@ export default {
   watch: {
   },
   created () {},
-  methods: {}
+  methods: {
+    async onLike () {
+      try {
+        const commentId = this.comment.com_id.toString()
+        // 如果已经赞，则取消点赞
+        if (this.comment.is_liking) {
+          await deleteCommentLike(commentId)
+          this.comment.like_count--
+        } else {
+          // 否则添加点赞
+          await addCommentLike(commentId)
+          this.comment.like_count++
+        }
+
+        // 更新视图
+        this.comment.is_liking = !this.comment.is_liking
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    }
+  }
 }
 </script>
 
