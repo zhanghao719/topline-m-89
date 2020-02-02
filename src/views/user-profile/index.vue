@@ -19,7 +19,7 @@
         change 事件：当用户所选的图片发生改变的时候才会触发
        -->
       <input ref="file" type="file" hidden @change="onFileChange">
-      <van-cell is-link title="昵称" :value="user.name" />
+      <van-cell is-link title="昵称" :value="user.name" @click="isEditNameShow = true" />
       <van-cell is-link title="介绍" value="内容" />
       <van-cell is-link title="性别" :value="user.gender === 0 ? '男' : '女'" />
       <van-cell is-link title="生日" :value="user.birthday" />
@@ -36,6 +36,32 @@
       />
     </van-image-preview>
     <!-- /头像预览 -->
+
+    <!-- 修改用户昵称 -->
+    <van-popup
+      v-model="isEditNameShow"
+      position="bottom"
+    >
+      <van-nav-bar
+        title="编辑昵称"
+        left-text="取消"
+        right-text="确定"
+        @click-left="isEditNameShow = false"
+        @click-right="onUpdateName"
+      />
+      <div>
+        <van-field
+          v-model="message"
+          rows="2"
+          autosize
+          type="textarea"
+          maxlength="20"
+          placeholder="请输入昵称"
+          show-word-limit
+        />
+      </div>
+    </van-popup>
+    <!-- /修改用户昵称 -->
   </div>
 </template>
 
@@ -51,7 +77,9 @@ export default {
     return {
       user: {}, // 用户资料
       isPreviewShow: false,
-      images: [] // 预览的图片列表
+      images: [], // 预览的图片列表
+      isEditNameShow: false,
+      message: '123'
     }
   },
   computed: {
@@ -102,11 +130,6 @@ export default {
     },
 
     async onUpdateAvatar () {
-      // 1. 构造包含文件数据的表单对象 FormData
-      // 注意：含有文件的数据务必要放到 FormData 中
-      const fd = new FormData()
-      fd.append('photo', this.file.files[0])
-
       this.$toast.loading({
         duration: 0, // 持续展示 toast
         message: '保存中...',
@@ -115,6 +138,15 @@ export default {
 
       // 2. 请求提交
       try {
+        // 1. 构造包含文件数据的表单对象 FormData
+        // 注意：含有文件的数据务必要放到 FormData 中
+        // FormData: 用代码构造一个表单对象，主要目的是用于异步发送文件上传
+        // MDN-FormData 对象的使用：https://developer.mozilla.org/zh-CN/docs/Web/API/FormData/Using_FormData_Objects
+        const fd = new FormData()
+        // 参数1：后端要求的数据字段名称
+        // 参数2：数据值
+        fd.append('photo', this.file.files[0])
+
         const { data } = await updateUserPhoto(fd)
 
         // 更新页面
@@ -130,6 +162,10 @@ export default {
       }
 
       // 3. 根据响应结果执行后续处理
+    },
+
+    onUpdateName () {
+      console.log('onUpdateName')
     }
   }
 }
@@ -149,6 +185,15 @@ export default {
     bottom: 0;
     .van-nav-bar {
       background: #000;
+    }
+  }
+
+  .van-popup {
+    /deep/ .van-nav-bar {
+      background: #fff;
+      .van-nav-bar__title {
+        color: #323233;
+      }
     }
   }
 }

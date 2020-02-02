@@ -74,6 +74,10 @@ export const updateUserPhoto = data => {
   return request({
     method: 'PATCH',
     url: '/app/v1_0/user/photo',
+    // 注意：
+    // 如果 Content-Type 要求是 application/json，则传递 {}
+    // 如果 Content-Type 要求是 multipart/form-data，则传递 FormData 对象
+    // multipart/form-data 常见于文件上传的格式要求
     data
   })
 }
