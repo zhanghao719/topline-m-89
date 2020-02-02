@@ -27,7 +27,12 @@
         :value="user.gender === 0 ? '女' : '男'"
         @click="isEditGenderShow = true"
       />
-      <van-cell is-link title="生日" :value="user.birthday" />
+      <van-cell
+        is-link
+        title="生日"
+        :value="user.birthday"
+        @click="isEditBirthdayShow = true"
+      />
     </van-cell-group>
 
     <!-- 头像预览 -->
@@ -83,6 +88,27 @@
       @select="onGenderSelect"
     />
     <!-- /编辑用户性别 -->
+
+    <!-- 编辑用户生日 -->
+    <van-popup
+      v-model="isEditBirthdayShow"
+      position="bottom"
+    >
+      <!--
+        v-model="currentDate" 默认显示时间和同步用户选择的时间
+        :min-date="minDate" 最小可选日期
+        max-date  最大可选日期
+       -->
+      <van-datetime-picker
+        :value="currentDate"
+        type="date"
+        :min-date="minDate"
+        :max-date="maxDate"
+        @cancel="isEditBirthdayShow = false"
+        @confirm="onUpdateBirthday"
+      />
+    </van-popup>
+    <!-- /编辑用户生日 -->
   </div>
 </template>
 
@@ -92,6 +118,7 @@ import {
   updateUserPhoto,
   updateUserProfile
 } from '@/api/user'
+import moment from 'moment'
 // import { ImagePreview } from 'vant'
 
 export default {
@@ -110,7 +137,11 @@ export default {
         // name 会显示出来，value 是我们自己添加的
         { name: '男', value: 1 },
         { name: '女', value: 0 }
-      ]
+      ],
+      isEditBirthdayShow: false,
+      minDate: new Date(1970, 0, 1),
+      maxDate: new Date()
+      // currentDate: new Date()
     }
   },
   computed: {
@@ -119,6 +150,10 @@ export default {
     // 因为多次访问到了该成员，所以我可以使用计算属性封装简化对成员的访问
     file () {
       return this.$refs['file']
+    },
+    currentDate () {
+      // 把字符串格式的日期转换为 JavaScript 日期对象，设置给 Vant 日期选择器
+      return new Date(this.user.birthday)
     }
   },
   watch: {},
@@ -237,6 +272,20 @@ export default {
       this.user.gender = data.value
       // 关闭上拉菜单
       this.isEditGenderShow = false
+    },
+
+    async onUpdateBirthday (value) {
+      // 使用 moment 把日期对象格式化为指定格式的字符串
+      const date = moment(value).format('YYYY-MM-DD')
+
+      // 请求提交
+      await this.updateUserProfile('birthday', date)
+
+      // 更新视图
+      this.user.birthday = date
+
+      // 关闭弹层
+      this.isEditBirthdayShow = false
     }
   }
 }
