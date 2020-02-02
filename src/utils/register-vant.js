@@ -23,7 +23,8 @@ import {
   Popup,
   Search,
   Loading,
-  ImagePreview
+  ImagePreview,
+  ActionSheet
 } from 'vant'
 
 // 注册
@@ -49,3 +50,4 @@ Vue.use(Button)
   .use(Search)
   .use(Loading)
   .use(ImagePreview)
+  .use(ActionSheet)

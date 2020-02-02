@@ -21,7 +21,12 @@
       <input ref="file" type="file" hidden @change="onFileChange">
       <van-cell is-link title="昵称" :value="user.name" @click="isEditNameShow = true" />
       <van-cell is-link title="介绍" value="内容" />
-      <van-cell is-link title="性别" :value="user.gender === 0 ? '男' : '女'" />
+      <van-cell
+        is-link
+        title="性别"
+        :value="user.gender === 0 ? '女' : '男'"
+        @click="isEditGenderShow = true"
+      />
       <van-cell is-link title="生日" :value="user.birthday" />
     </van-cell-group>
 
@@ -68,6 +73,16 @@
       </div>
     </van-popup>
     <!-- /修改用户昵称 -->
+
+    <!-- 编辑用户性别 -->
+    <van-action-sheet
+      v-model="isEditGenderShow"
+      :actions="actions"
+      cancel-text="取消"
+      @cancel="isEditGenderShow = false"
+      @select="onGenderSelect"
+    />
+    <!-- /编辑用户性别 -->
   </div>
 </template>
 
@@ -89,7 +104,13 @@ export default {
       isPreviewShow: false,
       images: [], // 预览的图片列表
       isEditNameShow: false,
-      inputName: '' // 输入框的数据
+      inputName: '', // 输入框的数据
+      isEditGenderShow: false,
+      actions: [
+        // name 会显示出来，value 是我们自己添加的
+        { name: '男', value: 1 },
+        { name: '女', value: 0 }
+      ]
     }
   },
   computed: {
@@ -207,6 +228,15 @@ export default {
 
       // 关闭弹层
       this.isEditNameShow = false
+    },
+
+    async onGenderSelect (data) {
+      // 请求提交
+      await this.updateUserProfile('gender', data.value)
+      // 更新视图展示
+      this.user.gender = data.value
+      // 关闭上拉菜单
+      this.isEditGenderShow = false
     }
   }
 }
