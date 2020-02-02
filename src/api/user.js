@@ -69,7 +69,7 @@ export const getUserProfile = () => {
   })
 }
 
-// 获取用户资料
+// 更新用户头像
 export const updateUserPhoto = data => {
   return request({
     method: 'PATCH',
