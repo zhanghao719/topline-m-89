@@ -5,7 +5,17 @@
     finished-text="没有更多了"
     @load="onLoad"
   >
-    <van-cell v-for="(article, index) in list" :key="index" :title="article.title" />
+    <van-cell
+      v-for="(article, index) in list"
+      :key="index"
+      :title="article.title"
+      @click="$router.push({
+        name: 'article',
+        params: {
+          articleId: article.art_id.toString()
+        }
+      })"
+    />
   </van-list>
 </template>
 
