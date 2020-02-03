@@ -45,6 +45,13 @@ const routes = [
     component: () => import('@/views/user-profile')
   },
   {
+    path: '/user/chat',
+    name: 'user-chat',
+    component: () => import('@/views/user-chat')
+  },
+  {
+    // 路由的匹配规则是从上到下的，越靠上面的优先级越高
+    // /user/chat
     path: '/user/:userId',
     name: 'user',
     component: () => import('@/views/user')

@@ -9,6 +9,7 @@
     />
     <!-- /导航栏 -->
 
+    <!-- 标签列表 -->
     <van-tabs v-model="active">
       <van-tab title="我的收藏">
         <collect-article />
@@ -20,6 +21,7 @@
         <user-article />
       </van-tab>
     </van-tabs>
+    <!-- /标签列表 -->
   </div>
 </template>
 
