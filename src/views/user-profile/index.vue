@@ -20,7 +20,7 @@
        -->
       <input ref="file" type="file" hidden @change="onFileChange">
       <van-cell is-link title="昵称" :value="user.name" @click="isEditNameShow = true" />
-      <van-cell is-link title="介绍" value="内容" />
+      <!-- <van-cell is-link title="介绍" value="内容" /> -->
       <van-cell
         is-link
         title="性别"

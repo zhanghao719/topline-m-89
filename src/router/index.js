@@ -61,6 +61,21 @@ const routes = [
     // 将路由动态参数映射到组件的 props 中，更推荐这种做法
     // 参考文档：https://router.vuejs.org/zh/guide/essentials/passing-props.html
     props: true
+  },
+  { // 我的作品
+    path: '/my-article',
+    name: 'my-article',
+    component: () => import('@/views/user-articles')
+  },
+  { // 我的收藏
+    path: '/my-article/collect',
+    name: 'my-article-collect',
+    component: () => import('@/views/user-articles')
+  },
+  { // 我的历史
+    path: '/my-article/history',
+    name: 'my-article-history',
+    component: () => import('@/views/user-articles')
   }
 ]
 
