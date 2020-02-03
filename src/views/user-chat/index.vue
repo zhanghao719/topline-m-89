@@ -34,8 +34,13 @@
 
     <!-- 发送消息 -->
     <van-cell-group class="send-message">
-      <van-field v-model="message" center clearable>
-        <van-button slot="button" size="small" type="primary">发送</van-button>
+      <van-field v-model.trim="message" center clearable>
+        <van-button
+          slot="button"
+          size="small"
+          type="primary"
+          @click="onSend"
+        >发送</van-button>
       </van-field>
     </van-cell-group>
     <!-- /发送消息 -->
@@ -49,17 +54,49 @@ export default {
   name: 'UserChat',
   data () {
     return {
-      message: ''
+      message: '',
+      socket: null // WebSocket 通信对象
     }
   },
   created () {
     // 建立 WebSocket 连接
     // 这里的请求是 WebSocket 请求，和项目中的 axios 没有任何关系
     const socket = io('http://ttapi.research.itcast.cn')
+    this.socket = socket
 
     socket.on('connect', function () {
       console.log('建立连接成功')
     })
+
+    // 发送消息
+    // socket.emit('消息类型', 消息内容)
+
+    // 测试小技巧：手动将数据成员暴露到全局，就可以在控制台中直接访问了，测试完毕，删除代码
+    // window.socket = socket
+
+    // 接收消息
+    // socket.on('消息类型', data => console.log(data))
+    socket.on('message', message => {
+      console.log('message => ', message)
+    })
+  },
+
+  methods: {
+    onSend () {
+      const message = this.message
+      if (!message.length) {
+        return
+      }
+
+      // 消息类型和数据格式都有要求
+      this.socket.emit('message', {
+        msg: message,
+        timestamp: Date.now()
+      })
+
+      // 清空文本框
+      this.message = ''
+    }
   }
 }
 </script>
