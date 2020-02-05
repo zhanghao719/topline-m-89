@@ -56,7 +56,7 @@
     </van-grid>
 
     <van-cell-group :border="false">
-      <van-cell title="消息通知" is-link />
+      <!-- <van-cell title="消息通知" is-link /> -->
       <van-cell title="小智同学" is-link @click="$router.push('/user/chat')" />
     </van-cell-group>
 

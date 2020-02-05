@@ -54,6 +54,7 @@
 
 <script>
 import io from 'socket.io-client'
+import { getItem, setItem } from '@/utils/storage'
 
 export default {
   name: 'UserChat',
@@ -61,7 +62,22 @@ export default {
     return {
       message: '',
       socket: null, // WebSocket 通信对象
-      messages: [] // 消息列表
+      messages: getItem('chat-messages') || [] // 消息列表
+    }
+  },
+  watch: {
+    // 监视函数有两个参数：
+    // 参数1：最新值
+    // 参数2：变化之前的旧值
+    messages (value) {
+      // 当消息列表发生变化，持久化存储到本地存储
+      setItem('chat-messages', value)
+
+      // 让消息列表滚动到底部
+      this.$nextTick(() => {
+        this.toBottom()
+      })
+      // this.toBottom()
     }
   },
   created () {
@@ -109,6 +125,11 @@ export default {
 
       // 清空文本框
       this.message = ''
+    },
+
+    toBottom () {
+      const listContainer = this.$refs['message-list']
+      listContainer.scrollTop = listContainer.scrollHeight
     }
   }
 }
@@ -135,6 +156,7 @@ export default {
           background: #fff;
           padding: 5px;
           border-radius: 6px;
+          font-size: 14px;
         }
         .avatar {
           margin-right: 5px;
