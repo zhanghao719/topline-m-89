@@ -99,7 +99,7 @@ request.interceptors.response.use(function (response) {
 
       // 4. 把之前失败的请求继续发出去
       // error.config 获取到的是本次请求相关的配置对象，其中包含它的 method、url 等信息
-      console.log(error.config)
+      // console.log(error.config)
 
       // 把本次因为 token 无效过期的失败请求重新发送
       // 注意：这里使用 request，还是走原来的请求拦截器、响应拦截器
@@ -114,13 +114,20 @@ request.interceptors.response.use(function (response) {
 })
 
 function redirectLogin () {
+  // 写法一：
+  // router.push('/login?key=value&key=value')
+
+  // 写法二：
   router.push({
     name: 'login',
     // query 参数会以 ?key=value&key=value 的格式添加到 url 后面
+    // query 参数不需要配置路由规则，可以传递任意参数
+    // query 是固定的语法格式，用来传递 ?key=value 查询字符串
     query: {
       // 这里使用查询参数把要跳转回来的路由地址传递给了登录页面
       // router.currentRoute 就是当前路由对象，好比我们在组件中的 this.$route
       // 当前路由对象的fullPath 就是当前路由的路径
+      // redirect 是我自己起的一个名字
       redirect: router.currentRoute.fullPath
     }
   })

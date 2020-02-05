@@ -1,7 +1,9 @@
 <template>
   <div class="tab-bar">
     <!-- 子路由出口 -->
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <!-- /子路由出口 -->
 
     <!-- tab-bar -->
@@ -19,7 +21,7 @@
 
 <script>
 export default {
-  name: 'TbaBar',
+  name: 'TabBar',
   components: {},
   props: {},
   data () {
