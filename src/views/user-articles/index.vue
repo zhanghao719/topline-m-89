@@ -63,6 +63,7 @@ export default {
   //    next() 允许通过
   //    next(false) 不允许通过
   beforeRouteLeave (to, from, next) {
+    console.log(to)
     // 如果跳转的是文章详情页，则把当前页面缓存起来，否则不缓存
     if (to.name === 'article') {
       this.$store.commit('addCachePage', 'UserArticles')
