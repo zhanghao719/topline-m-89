@@ -6,6 +6,16 @@ Vue.use(VueRouter)
 // 路由表配置
 const routes = [
   {
+    // 路由传参
+    // 方式一：params 参数，更严格一些
+    //    配置路由路径规则
+    //    例如：/login/:abc
+    //    在组件中获取参数：this.$route.params.abc 或者通过 props 接收
+    // 方式二：query 参数
+    //    不需要配置路由规则
+    //    /login?a=b&foo=bar&n=10
+    //    在组件中获取 query 参数：this.$route.query.xxx
+    // 使用建议：把非必须的参数配置为 query 参数，把必须的参数配置为 params 参数
     path: '/login',
     name: 'login',
     component: () => import('@/views/login')

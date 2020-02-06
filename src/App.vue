@@ -24,7 +24,7 @@ export default {
   name: 'App',
   data () {
     return {
-      cachePages: ['TabBar']
+      // cachePages: ['TabBar']
     }
   }
 }

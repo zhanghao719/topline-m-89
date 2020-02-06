@@ -92,10 +92,12 @@ request.interceptors.response.use(function (response) {
       // 修改容器数据必须通过 mutation 来修改
 
       // 3. 如果刷新 token 成功了，则把新的 token 更新到容器中
-      store.commit('setUser', {
-        ...user, // { id, token, refresh_token }
-        token: data.data.token // 更新 token
-      })
+      user.token = data.data.token
+      store.commit('setUser', user)
+      // store.commit('setUser', {
+      //   ...user, // { id, token, refresh_token }
+      //   token: data.data.token // 更新 token
+      // })
 
       // 4. 把之前失败的请求继续发出去
       // error.config 获取到的是本次请求相关的配置对象，其中包含它的 method、url 等信息

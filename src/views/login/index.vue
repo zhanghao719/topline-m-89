@@ -131,7 +131,9 @@ export default {
 
         // 如果有 redirect 则跳转到来源页，没有就跳转到首页
         const redirect = this.$route.query.redirect || '/'
-        this.$router.push(redirect)
+
+        // 登录成功，使用 replace 跳转（不会形成历史记录）
+        this.$router.replace(redirect)
       } catch (err) {
         console.log('登录失败', err)
         this.$toast.fail('登录失败，手机号或验证码不正确')
@@ -157,7 +159,7 @@ export default {
         this.isCountDownShow = true
 
         // 3. 请求发送短信验证码
-        // await getSmsCode(mobile)
+        await getSmsCode(mobile)
       } catch (err) {
         console.log(err)
         // 关闭验证码显示

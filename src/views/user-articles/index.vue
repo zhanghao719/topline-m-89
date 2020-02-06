@@ -1,10 +1,14 @@
 <template>
   <div class="user-articles">
     <!-- 导航栏 -->
+    <!--
+      router.push 会形成历史记录
+      router.replace 也 push 的使用方式一样，但是不会形成历史记录
+     -->
     <van-nav-bar
       title="我的收藏/历史/作品"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="$router.replace('/my')"
       fixed
     />
     <!-- /导航栏 -->
@@ -55,6 +59,18 @@ export default {
   watch: {},
   created () {},
   mounted () {},
+  // 当组件被缓存之后不再触发 create、mount
+  // 如果你想要当缓存页面由激活到停用或者是由停用→激活执行一些业务操作的时候，可以使用 activated、deactivated
+  // 被 keep-alive 缓存的组件激活时调用。
+  activated () {
+    console.log('activated')
+  },
+
+  // 被 keep-alive 缓存的组件停用时调用。
+  deactivated () {
+    console.log('deactivated')
+  },
+
   methods: {},
   // 当前页面路由跳转的时候会触发这个路由钩子函数
   // to   要去哪儿的信息
