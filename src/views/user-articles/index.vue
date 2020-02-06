@@ -16,30 +16,33 @@
     <!-- 标签列表 -->
     <van-tabs v-model="active">
       <van-tab title="我的收藏">
-        <collect-article />
+        <!-- <collect-article /> -->
       </van-tab>
       <van-tab title="我的历史">
-        <history-article />
+        <!-- <history-article /> -->
       </van-tab>
       <van-tab title="我的作品">
-        <user-article />
+        <!-- <user-article /> -->
       </van-tab>
     </van-tabs>
     <!-- /标签列表 -->
+
+    <!-- 动态组件 -->
+    <component v-bind:is="currentTabComponent"></component>
   </div>
 </template>
 
 <script>
-import UserArticle from './components/article'
-import CollectArticle from './components/collect'
-import HistoryArticle from './components/history'
+// import UserArticle from './components/article'
+// import CollectArticle from './components/collect'
+// import HistoryArticle from './components/history'
 
 export default {
   name: 'UserArticles',
   components: {
-    UserArticle,
-    CollectArticle,
-    HistoryArticle
+    UserArticle: () => import('./components/article'),
+    CollectArticle: () => import('./components/collect'),
+    HistoryArticle: () => import('./components/history')
   },
   props: {
     type: {
@@ -55,7 +58,11 @@ export default {
       active // 控制激活的标签选项
     }
   },
-  computed: {},
+  computed: {
+    currentTabComponent () {
+      return ['CollectArticle', 'HistoryArticle', 'UserArticle'][this.active]
+    }
+  },
   watch: {},
   created () {},
   mounted () {},
